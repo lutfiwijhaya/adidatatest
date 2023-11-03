@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form User Interface</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Form User Interface</h2>
+    <form action="/register" method="post">
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="">
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="text" class="form-control" id="Email" name="Email" value="">
+        </div>
+        <div class="form-group">
+            <label for="Password">Password:</label>
+            <input type="Password" class="form-control" id="Password" name="Password" value="">
+        </div>
+        <div class="form-group">
+            <label for="Handphone">No Handpohone:</label>
+            <input type="tel" class="form-control" id="Handphone" name="Handphone" value="">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="No_Kartu">No Kartu (16 Digit):</label>
+                <input type="text" class="form-control" id="No_Kartu" name="No_Kartu" pattern="[0-9]*" value="" maxlength="16">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="CVV">CVV (3 Digit):</label>
+                <input type="text" class="form-control" id="CVV" name="CVV" value="" maxlength="3">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Expired_Kartu">Expired Kartu (MM/YY):</label>
+                <input type="text" class="form-control" id="Expired_Kartu" name="Expired_Kartu" value="" maxlength="5">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Pemegang_Kartu">Pemegang Kartu:</label>
+                <input type="text" class="form-control" id="Pemegang_Kartu" name="Pemegang_Kartu" value="">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <p><a href="/login">Kembali</a></p>
+</div>
+<script>
+    document.getElementById('Expired_Kartu').addEventListener('input', function (e) {
+        // Hanya menerima angka
+        this.value = this.value.replace(/\D/g, '');
+
+        // Memformat input menjadi "MM/YY"
+        if (this.value.length > 2) {
+            this.value = this.value.replace(/^(\d{2})(\d{2})/, '$1/$2');
+        }
+    });
+
+    document.getElementById('No_Kartu').addEventListener('input', function (e) {
+        // Hanya menerima angka
+        this.value = this.value.replace(/\D/g, '');
+    });
+
+     document.getElementById('CVV').addEventListener('input', function (e) {
+        // Hanya menerima angka
+        this.value = this.value.replace(/\D/g, '');
+    });
+
+     document.getElementById('Handphone').addEventListener('input', function (e) {
+        // Hanya menerima angka
+        this.value = this.value.replace(/\D/g, '');
+    });
+
+    fetch('/register', {
+    method: 'POST',
+    body: JSON.stringify(registrationData),
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+.then(response => {
+    if (response.ok) {
+        // Registrasi berhasil, tampilkan pesan sukses
+    } else {
+        response.text().then(errorMessage => {
+            // Registrasi gagal, tampilkan pesan kesalahan
+            alert('Registrasi gagal: ' + errorMessage);
+        });
+    }
+})
+.catch(error => {
+    // Tangani kesalahan jaringan atau server
+    console.error('Error: ' + error);
+});
+
+</script>
+
+</body>
+</html>
